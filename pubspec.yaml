@@ -1,7 +1,7 @@
 name: intel_hex_encoder
 description: A intel hex encoder for your flutter project.
 version: 0.0.1
-author:
+author: Markus Friedl<markus.friedl@varicon.at>
 homepage:
 
 environment:

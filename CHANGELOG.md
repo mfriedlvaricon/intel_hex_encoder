@@ -1,3 +1,5 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1] - 2020-09-29
 
-* TODO: Describe initial release.
+* Initial Release of a intel hex encoder
+* Converts Data(String) to hex
+* Supports use of already Converted Data (IntelHexRecord.hexed)
