@@ -10,17 +10,26 @@ class IntelHexRecord {
   //00 = more lines to come; 01 = eof
   int type;
   String data;
+  bool isHexData = false;
 
   IntelHexRecord(this.length, this.address, this.type, this.data);
 
-  static IntelHexRecord eOF() {
-    return IntelHexRecord(0, 0, 1, "");
+  IntelHexRecord.eOF() : this(0,0,1,"");
+
+  IntelHexRecord.hexed(this.address){
+    this.length = 0;
+    this.address = address;
+    this.type = 0;
+    this.data = "";
+    this.isHexData = true;
   }
 
   String _toHex(var value, int padWidth) {
+    //No Conversion needed when already hexed
+    if(isHexData)
+      return data;
+
     List<int> bytes = utf8.encode(value.toString());
-    print(value.toString() + " to: ");
-    print(bytes);
     HexEncoder hexEnc;
     var hexValue = hex.encode(bytes);
     return hexValue.toString().padLeft(padWidth, "0");
@@ -68,12 +77,17 @@ class IntelHexRecord {
     for (int i = 0; i < longBytes.length; i++) {}
   }
 
-  String getIntelHex() {
+  String getIntelHex(bool seperated) {
     return ":" +
-        length.toRadixString(16).padLeft(2, "0") +
-        address.toRadixString(16).padLeft(4, "0") +
-        type.toRadixString(16).padLeft(2, "0") +
-        _toHex(data, length * 2) +
+        length.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
+        address.toRadixString(16).padLeft(4, "0") + (seperated ? " " : "") +
+        type.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
+        _toHex(data, length * 2) + (seperated ? " " : "") +
         _getChecksum();
+  }
+
+  addHexedData(String hexedData){
+    data += hexedData;
+    length += hexedData.length;
   }
 }
