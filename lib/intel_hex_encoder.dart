@@ -24,6 +24,8 @@ class IntelHexRecord {
     this.isHexData = true;
   }
 
+  IntelHexRecord.typed(type) : this(0,0,type,"");
+
   String _toHex(var value, int padWidth) {
     //No Conversion needed when already hexed
     if(isHexData)
@@ -79,15 +81,15 @@ class IntelHexRecord {
 
   String getIntelHex(bool seperated) {
     return ":" +
-        length.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
+        (length.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
         address.toRadixString(16).padLeft(4, "0") + (seperated ? " " : "") +
         type.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
         _toHex(data, length * 2) + (seperated ? " " : "") +
-        _getChecksum();
+        _getChecksum()).toUpperCase();
   }
 
   addHexedData(String hexedData){
     data += hexedData;
-    length += hexedData.length;
+    length += hexedData.length~/2;
   }
 }
