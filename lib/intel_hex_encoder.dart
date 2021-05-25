@@ -26,6 +26,8 @@ class IntelHexRecord {
 
   IntelHexRecord.typed(type) : this(0,0,type,"");
 
+  IntelHexRecord.custom(this.length, this.address, this.type, this.data, this.isHexData);
+
   String _toHex(var value, int padWidth) {
     //No Conversion needed when already hexed
     if(isHexData)
