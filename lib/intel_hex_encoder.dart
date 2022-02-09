@@ -5,11 +5,11 @@ import 'dart:math';
 import 'package:convert/convert.dart';
 
 class IntelHexRecord {
-  int length;
+  late int length;
   int address;
   //00 = more lines to come; 01 = eof
-  int type;
-  String data;
+  late int type;
+  late String data;
   bool isHexData = false;
 
   IntelHexRecord(this.length, this.address, this.type, this.data);
@@ -28,7 +28,7 @@ class IntelHexRecord {
 
   IntelHexRecord.custom(this.length, this.address, this.type, this.data, this.isHexData);
 
-  String _toHex(var value, int padWidth) {
+  String? _toHex(var value, int padWidth) {
     //No Conversion needed when already hexed
     if(isHexData)
       return data;
@@ -41,9 +41,9 @@ class IntelHexRecord {
 
   String _getChecksum() {
     int addressValue = address - ((address % 255) * 255);
-    int sum = length + addressValue;
+    int sum = length! + addressValue;
 
-    utf8.encode(data).forEach((element) {
+    utf8.encode(data!).forEach((element) {
       sum += element;
     });
 
@@ -67,12 +67,12 @@ class IntelHexRecord {
       }
       //print("i: " + i.toString() + " > " + checkSum[i] + " pow: " + (checkSum.length - i - 1).toString());
       if (checkSum[i] == "1") {
-        checkSumValue += pow(2, checkSum.length - i - 1);
+        checkSumValue += pow(2, checkSum.length - i - 1) as int;
       }
     }
     return checkSumValue.toRadixString(16).padLeft(10, "0").substring(8, 10);
   }
-
+  /*
   List<int> _byteAddition(List<int> bytes, List<int> bytesToAdd) {
     List<int> longBytes = bytes.length > bytesToAdd.length ? bytes : bytesToAdd;
     List<int> shortBytes =
@@ -80,13 +80,14 @@ class IntelHexRecord {
 
     for (int i = 0; i < longBytes.length; i++) {}
   }
+*/
 
   String getIntelHex(bool seperated) {
     return ":" +
-        (length.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
+        (length!.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
         address.toRadixString(16).padLeft(4, "0") + (seperated ? " " : "") +
-        type.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
-        _toHex(data, length * 2) + (seperated ? " " : "") +
+        type!.toRadixString(16).padLeft(2, "0") + (seperated ? " " : "") +
+        _toHex(data, length! * 2)! + (seperated ? " " : "") +
         _getChecksum()).toUpperCase();
   }
 

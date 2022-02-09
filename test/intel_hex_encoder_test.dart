@@ -17,7 +17,7 @@ void main() {
       for (int i = 0; i < 30; i++) {
         if (i == 25) {
           print(record.getIntelHex(false));
-          record = IntelHexRecord.hexed(record.address + record.length);
+          record = IntelHexRecord.hexed(record.address + record.length!);
         }
 
         if (s == i) {
@@ -46,7 +46,7 @@ void main() {
     for (int i = 0; i < 30; i++) {
       if (i == 25) {
         print(record.getIntelHex(true));
-        record = IntelHexRecord.hexed(record.address + record.length);
+        record = IntelHexRecord.hexed(record.address + record.length!);
       }
 
       String color = "";
